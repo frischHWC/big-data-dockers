@@ -95,3 +95,42 @@ N.B : You should also see spark master and its worker at this url : [http://loca
 
 Dockers are base on [this docker](https://hub.docker.com/r/gettyimages/spark/tags)
 
+## Hive
+
+Hive 2
+
+To launch hive docker :
+Go to folder `docker-hive` and run : 
+```
+docker-compose up -d
+```
+
+If everything went well : 
+```
+HW15215:docker-hive frisch$ docker ps -a
+CONTAINER ID        IMAGE                                             COMMAND                  CREATED             STATUS                   PORTS                                          NAMES
+82677e8b32ca        bde2020/hive:2.3.2-postgresql-metastore           "entrypoint.sh /opt/…"   5 minutes ago       Up 5 minutes             10000/tcp, 0.0.0.0:9083->9083/tcp, 10002/tcp   docker-hive_hive-metastore_1
+faf01f803a74        bde2020/hadoop-datanode:2.0.0-hadoop2.7.4-java8   "/entrypoint.sh /run…"   5 minutes ago       Up 5 minutes (healthy)   0.0.0.0:50075->50075/tcp                       docker-hive_datanode_1
+7827ca2d566e        bde2020/hadoop-namenode:2.0.0-hadoop2.7.4-java8   "/entrypoint.sh /run…"   5 minutes ago       Up 5 minutes (healthy)   0.0.0.0:50070->50070/tcp                       docker-hive_namenode_1
+8d43c38fec0e        bde2020/hive:2.3.2-postgresql-metastore           "entrypoint.sh /bin/…"   5 minutes ago       Up 5 minutes             0.0.0.0:10000->10000/tcp, 10002/tcp            docker-hive_hive-server_1
+```
+
+You can start a hive shell with this command : 
+
+```
+HW15215:docker-hive frisch$ docker exec -it docker-hive_hive-server_1 hive
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/opt/hive/lib/log4j-slf4j-impl-2.6.2.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/opt/hadoop-2.7.4/share/hadoop/common/lib/slf4j-log4j12-1.7.10.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+SLF4J: Actual binding is of type [org.apache.logging.slf4j.Log4jLoggerFactory]
+
+Logging initialized using configuration in file:/opt/hive/conf/hive-log4j2.properties Async: true
+Hive-on-MR is deprecated in Hive 2 and may not be available in the future versions. Consider using a different execution engine (i.e. spark, tez) or using Hive 1.X releases.
+hive> 
+```
+
+
+Docker are based on [this dockers from gitHub](https://github.com/big-data-europe/docker-hive)
+
+
