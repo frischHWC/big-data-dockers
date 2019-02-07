@@ -2,7 +2,7 @@
 .DS_Store
 
 # Spark
-docker-spark/conf/*
-docker-spark/conf/
-docker-spark/data/
-docker-spark/data/*
+/docker-spark/conf/*
+/docker-spark/conf/
+/docker-spark/data/
+/docker-spark/data/*
