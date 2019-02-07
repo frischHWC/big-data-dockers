@@ -130,7 +130,76 @@ Hive-on-MR is deprecated in Hive 2 and may not be available in the future versio
 hive> 
 ```
 
-
 Docker are based on [this dockers from gitHub](https://github.com/big-data-europe/docker-hive)
 
+
+## Kafka
+
+
+
+To launch hive docker :
+Go to folder `docker-kafka` and run : 
+```
+docker-compose up -d
+```
+
+If everything went well : 
+```
+HW15215:docker-kafka frisch$ docker ps -a
+CONTAINER ID        IMAGE                                             COMMAND                  CREATED              STATUS              PORTS                                                        NAMES
+3ae741b345b2        confluentinc/cp-enterprise-control-center:5.1.0   "/etc/confluent/dock…"   About a minute ago   Up About a minute   0.0.0.0:9021->9021/tcp                                       docker-kafka_control-center_1
+e390aadf9918        confluentinc/cp-kafka-rest:5.1.0                  "/etc/confluent/dock…"   About a minute ago   Up About a minute   0.0.0.0:8082->8082/tcp                                       docker-kafka_rest-proxy_1
+d23bdd30f518        confluentinc/cp-schema-registry:5.1.0             "/etc/confluent/dock…"   About a minute ago   Up About a minute   0.0.0.0:8081->8081/tcp                                       docker-kafka_schema-registry_1
+779c770d807c        confluentinc/cp-enterprise-kafka:5.1.0            "/etc/confluent/dock…"   About a minute ago   Up About a minute   0.0.0.0:9092->9092/tcp, 0.0.0.0:29092->29092/tcp             docker-kafka_broker1_1
+b9e269a23e4c        confluentinc/cp-enterprise-kafka:5.1.0            "/etc/confluent/dock…"   About a minute ago   Up About a minute   0.0.0.0:9093->9093/tcp, 9092/tcp, 0.0.0.0:29093->29093/tcp   docker-kafka_broker2_1
+fe72c757d745        confluentinc/cp-zookeeper:5.1.0                   "/etc/confluent/dock…"   About a minute ago   Up About a minute   2888/tcp, 0.0.0.0:2181->2181/tcp, 3888/tcp                   docker-kafka_zookeeper_1
+```
+
+You can log on a kafka broker and launch some commands, like this :
+
+```
+HW15215:docker-kafka frisch$ docker exec -it docker-kafka_broker_1 bash
+root@broker:/# kafka-topics --zookeeper zookeeper:2181 --list
+__confluent.support.metrics
+__consumer_offsets
+_confluent-command
+_confluent-controlcenter-5-1-0-1-AlertHistoryStore-changelog
+_confluent-controlcenter-5-1-0-1-Group-ONE_MINUTE-changelog
+_confluent-controlcenter-5-1-0-1-Group-THREE_HOURS-changelog
+_confluent-controlcenter-5-1-0-1-KSTREAM-OUTEROTHER-0000000096-store-changelog
+_confluent-controlcenter-5-1-0-1-KSTREAM-OUTERTHIS-0000000095-store-changelog
+_confluent-controlcenter-5-1-0-1-MetricsAggregateStore-changelog
+_confluent-controlcenter-5-1-0-1-MetricsAggregateStore-repartition
+_confluent-controlcenter-5-1-0-1-MonitoringMessageAggregatorWindows-ONE_MINUTE-changelog
+_confluent-controlcenter-5-1-0-1-MonitoringMessageAggregatorWindows-THREE_HOURS-changelog
+_confluent-controlcenter-5-1-0-1-MonitoringStream-ONE_MINUTE-changelog
+_confluent-controlcenter-5-1-0-1-MonitoringStream-THREE_HOURS-changelog
+_confluent-controlcenter-5-1-0-1-MonitoringTriggerStore-changelog
+_confluent-controlcenter-5-1-0-1-MonitoringVerifierStore-changelog
+_confluent-controlcenter-5-1-0-1-TriggerActionsStore-changelog
+_confluent-controlcenter-5-1-0-1-TriggerEventsStore-changelog
+_confluent-controlcenter-5-1-0-1-actual-group-consumption-rekey
+_confluent-controlcenter-5-1-0-1-aggregate-topic-partition
+_confluent-controlcenter-5-1-0-1-aggregate-topic-partition-changelog
+_confluent-controlcenter-5-1-0-1-aggregatedTopicPartitionTableWindows-ONE_MINUTE-changelog
+_confluent-controlcenter-5-1-0-1-aggregatedTopicPartitionTableWindows-THREE_HOURS-changelog
+_confluent-controlcenter-5-1-0-1-cluster-rekey
+_confluent-controlcenter-5-1-0-1-error-topic
+_confluent-controlcenter-5-1-0-1-expected-group-consumption-rekey
+_confluent-controlcenter-5-1-0-1-group-aggregate-topic-ONE_MINUTE
+_confluent-controlcenter-5-1-0-1-group-aggregate-topic-ONE_MINUTE-changelog
+_confluent-controlcenter-5-1-0-1-group-aggregate-topic-THREE_HOURS
+_confluent-controlcenter-5-1-0-1-group-aggregate-topic-THREE_HOURS-changelog
+_confluent-controlcenter-5-1-0-1-group-stream-extension-rekey
+_confluent-controlcenter-5-1-0-1-metrics-trigger-measurement-rekey
+_confluent-controlcenter-5-1-0-1-monitoring-aggregate-rekey
+_confluent-controlcenter-5-1-0-1-monitoring-aggregate-rekey-changelog
+_confluent-controlcenter-5-1-0-1-monitoring-message-rekey
+_confluent-controlcenter-5-1-0-1-monitoring-trigger-event-rekey
+_confluent-metrics
+_confluent-monitoring
+_schemas
+```
+
+Docker are based on [this dockers from Confluent](https://github.com/confluentinc/cp-docker-images)
 
