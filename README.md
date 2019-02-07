@@ -5,7 +5,7 @@ Once your dockers are launched, you can easily connect to them and test whatever
 (e.g. Try some requests, check what's happening on the file system in some cases, try your code etc...)  
 
 
-## docker-hbase
+## HBase
 
 HBase 1.2.6
 
@@ -43,5 +43,55 @@ hbase(main):001:0>
 ```
 
 
-Docker are based on (this dockers from gitHub)[https://github.com/big-data-europe/docker-hbase] 
+Docker are based on [this dockers from gitHub](https://github.com/big-data-europe/docker-hbase)
+
+
+## Spark
+
+Spark-2.4.0
+
+To launch hbase docker :
+Go to folder `docker-spark` and run : 
+```
+docker-compose up -d
+```
+
+If everything went well : 
+```
+HW15215:docker-spark frisch$ docker ps -a
+CONTAINER ID        IMAGE                                COMMAND                  CREATED             STATUS              PORTS                                                                                                           NAMES
+64f687f476ee        gettyimages/spark:2.4.0-hadoop-3.0   "bin/spark-class org…"   4 seconds ago       Up 3 seconds        7012-7015/tcp, 8883/tcp, 0.0.0.0:8083->8083/tcp                                                                 docker-spark_worker3_1
+fc13367829be        gettyimages/spark:2.4.0-hadoop-3.0   "bin/spark-class org…"   4 seconds ago       Up 3 seconds        7012-7015/tcp, 8884/tcp, 0.0.0.0:8084->8084/tcp                                                                 docker-spark_worker4_1
+1373973686e7        gettyimages/spark:2.4.0-hadoop-3.0   "bin/spark-class org…"   4 minutes ago       Up 4 minutes        7012-7015/tcp, 8881/tcp, 0.0.0.0:8081->8081/tcp                                                                 docker-spark_worker1_1
+44279f43fb73        gettyimages/spark:2.4.0-hadoop-3.0   "bin/spark-class org…"   4 minutes ago       Up 4 minutes        7012-7015/tcp, 8882/tcp, 0.0.0.0:8082->8082/tcp                                                                 docker-spark_worker2_1
+80a4bd3964ce        gettyimages/spark:2.4.0-hadoop-3.0   "bin/spark-class org…"   4 minutes ago       Up 4 minutes        0.0.0.0:4040->4040/tcp, 0.0.0.0:6066->6066/tcp, 0.0.0.0:7077->7077/tcp, 0.0.0.0:8080->8080/tcp, 7001-7005/tcp   docker-spark_master_1
+```
+
+You can start a Spark scala shell :
+
+```
+HW15215:docker-spark frisch$ docker exec -it docker-spark_worker2_1 spark-shell
+2019-02-07 10:53:25 WARN  NativeCodeLoader:60 - Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+Setting default log level to "WARN".
+To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLevel(newLevel).
+Spark context Web UI available at http://localhost:4040
+Spark context available as 'sc' (master = local[*], app id = local-1549536814297).
+Spark session available as 'spark'.
+Welcome to
+      ____              __
+     / __/__  ___ _____/ /__
+    _\ \/ _ \/ _ `/ __/  '_/
+   /___/ .__/\_,_/_/ /_/\_\   version 2.4.0
+      /_/
+         
+Using Scala version 2.11.12 (Java HotSpot(TM) 64-Bit Server VM, Java 1.8.0_202)
+Type in expressions to have them evaluated.
+Type :help for more information.
+
+scala> 
+```
+
+N.B : You should also see spark master and its worker at this url : [http://localhost:8080](http://localhost:8080)
+
+Dockers are base on [this docker](https://hub.docker.com/r/gettyimages/spark/tags)
 
