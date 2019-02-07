@@ -5,7 +5,7 @@ Once your dockers are launched, you can easily connect to them and test whatever
 (e.g. Try some requests, check what's happening on the file system in some cases, try your code etc...)  
 
 
-## docker-hbase
+## HBase
 
 HBase 1.2.6
 
@@ -43,5 +43,203 @@ hbase(main):001:0>
 ```
 
 
-Docker are based on (this dockers from gitHub)[https://github.com/big-data-europe/docker-hbase] 
+Dockers are based on [these dockers from Big Data Europe gitHub](https://github.com/big-data-europe/docker-hbase)
 
+
+## Spark
+
+Spark-2.4.0
+
+To launch hbase docker :
+Go to folder `docker-spark` and run : 
+```
+docker-compose up -d
+```
+
+If everything went well : 
+```
+HW15215:docker-spark frisch$ docker ps -a
+CONTAINER ID        IMAGE                                COMMAND                  CREATED             STATUS              PORTS                                                                                                           NAMES
+64f687f476ee        gettyimages/spark:2.4.0-hadoop-3.0   "bin/spark-class org…"   4 seconds ago       Up 3 seconds        7012-7015/tcp, 8883/tcp, 0.0.0.0:8083->8083/tcp                                                                 docker-spark_worker3_1
+fc13367829be        gettyimages/spark:2.4.0-hadoop-3.0   "bin/spark-class org…"   4 seconds ago       Up 3 seconds        7012-7015/tcp, 8884/tcp, 0.0.0.0:8084->8084/tcp                                                                 docker-spark_worker4_1
+1373973686e7        gettyimages/spark:2.4.0-hadoop-3.0   "bin/spark-class org…"   4 minutes ago       Up 4 minutes        7012-7015/tcp, 8881/tcp, 0.0.0.0:8081->8081/tcp                                                                 docker-spark_worker1_1
+44279f43fb73        gettyimages/spark:2.4.0-hadoop-3.0   "bin/spark-class org…"   4 minutes ago       Up 4 minutes        7012-7015/tcp, 8882/tcp, 0.0.0.0:8082->8082/tcp                                                                 docker-spark_worker2_1
+80a4bd3964ce        gettyimages/spark:2.4.0-hadoop-3.0   "bin/spark-class org…"   4 minutes ago       Up 4 minutes        0.0.0.0:4040->4040/tcp, 0.0.0.0:6066->6066/tcp, 0.0.0.0:7077->7077/tcp, 0.0.0.0:8080->8080/tcp, 7001-7005/tcp   docker-spark_master_1
+```
+
+You can start a Spark scala shell :
+
+```
+HW15215:docker-spark frisch$ docker exec -it docker-spark_worker2_1 spark-shell
+2019-02-07 10:53:25 WARN  NativeCodeLoader:60 - Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+Setting default log level to "WARN".
+To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLevel(newLevel).
+Spark context Web UI available at http://localhost:4040
+Spark context available as 'sc' (master = local[*], app id = local-1549536814297).
+Spark session available as 'spark'.
+Welcome to
+      ____              __
+     / __/__  ___ _____/ /__
+    _\ \/ _ \/ _ `/ __/  '_/
+   /___/ .__/\_,_/_/ /_/\_\   version 2.4.0
+      /_/
+         
+Using Scala version 2.11.12 (Java HotSpot(TM) 64-Bit Server VM, Java 1.8.0_202)
+Type in expressions to have them evaluated.
+Type :help for more information.
+
+scala> 
+```
+
+N.B : You should also see spark master and its worker at this url : [http://localhost:8080](http://localhost:8080)
+
+Dockers are based on [these dockers from gettyimages](https://hub.docker.com/r/gettyimages/spark/tags)
+
+## Hive
+
+Hive 2
+
+To launch hive docker :
+Go to folder `docker-hive` and run : 
+```
+docker-compose up -d
+```
+
+If everything went well : 
+```
+HW15215:docker-hive frisch$ docker ps -a
+CONTAINER ID        IMAGE                                             COMMAND                  CREATED             STATUS                   PORTS                                          NAMES
+82677e8b32ca        bde2020/hive:2.3.2-postgresql-metastore           "entrypoint.sh /opt/…"   5 minutes ago       Up 5 minutes             10000/tcp, 0.0.0.0:9083->9083/tcp, 10002/tcp   docker-hive_hive-metastore_1
+faf01f803a74        bde2020/hadoop-datanode:2.0.0-hadoop2.7.4-java8   "/entrypoint.sh /run…"   5 minutes ago       Up 5 minutes (healthy)   0.0.0.0:50075->50075/tcp                       docker-hive_datanode_1
+7827ca2d566e        bde2020/hadoop-namenode:2.0.0-hadoop2.7.4-java8   "/entrypoint.sh /run…"   5 minutes ago       Up 5 minutes (healthy)   0.0.0.0:50070->50070/tcp                       docker-hive_namenode_1
+8d43c38fec0e        bde2020/hive:2.3.2-postgresql-metastore           "entrypoint.sh /bin/…"   5 minutes ago       Up 5 minutes             0.0.0.0:10000->10000/tcp, 10002/tcp            docker-hive_hive-server_1
+```
+
+You can start a hive shell with this command : 
+
+```
+HW15215:docker-hive frisch$ docker exec -it docker-hive_hive-server_1 hive
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/opt/hive/lib/log4j-slf4j-impl-2.6.2.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/opt/hadoop-2.7.4/share/hadoop/common/lib/slf4j-log4j12-1.7.10.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+SLF4J: Actual binding is of type [org.apache.logging.slf4j.Log4jLoggerFactory]
+
+Logging initialized using configuration in file:/opt/hive/conf/hive-log4j2.properties Async: true
+Hive-on-MR is deprecated in Hive 2 and may not be available in the future versions. Consider using a different execution engine (i.e. spark, tez) or using Hive 1.X releases.
+hive> 
+```
+
+Dockers are based on [these dockers from Big Data Europe gitHub](https://github.com/big-data-europe/docker-hive)
+
+
+## Kafka
+
+Kafka 2.1.0 from Confluent 5.1.0
+
+To launch hive docker :
+Go to folder `docker-kafka` and run : 
+```
+docker-compose up -d
+```
+
+If everything went well : 
+```
+HW15215:docker-kafka frisch$ docker ps -a
+CONTAINER ID        IMAGE                                             COMMAND                  CREATED              STATUS              PORTS                                                        NAMES
+3ae741b345b2        confluentinc/cp-enterprise-control-center:5.1.0   "/etc/confluent/dock…"   About a minute ago   Up About a minute   0.0.0.0:9021->9021/tcp                                       docker-kafka_control-center_1
+e390aadf9918        confluentinc/cp-kafka-rest:5.1.0                  "/etc/confluent/dock…"   About a minute ago   Up About a minute   0.0.0.0:8082->8082/tcp                                       docker-kafka_rest-proxy_1
+d23bdd30f518        confluentinc/cp-schema-registry:5.1.0             "/etc/confluent/dock…"   About a minute ago   Up About a minute   0.0.0.0:8081->8081/tcp                                       docker-kafka_schema-registry_1
+779c770d807c        confluentinc/cp-enterprise-kafka:5.1.0            "/etc/confluent/dock…"   About a minute ago   Up About a minute   0.0.0.0:9092->9092/tcp, 0.0.0.0:29092->29092/tcp             docker-kafka_broker1_1
+b9e269a23e4c        confluentinc/cp-enterprise-kafka:5.1.0            "/etc/confluent/dock…"   About a minute ago   Up About a minute   0.0.0.0:9093->9093/tcp, 9092/tcp, 0.0.0.0:29093->29093/tcp   docker-kafka_broker2_1
+fe72c757d745        confluentinc/cp-zookeeper:5.1.0                   "/etc/confluent/dock…"   About a minute ago   Up About a minute   2888/tcp, 0.0.0.0:2181->2181/tcp, 3888/tcp                   docker-kafka_zookeeper_1
+```
+
+You can log on a kafka broker and launch some commands, like this :
+
+```
+HW15215:docker-kafka frisch$ docker exec -it docker-kafka_broker_1 bash
+root@broker:/# kafka-topics --zookeeper zookeeper:2181 --list
+__confluent.support.metrics
+__consumer_offsets
+_confluent-command
+_confluent-controlcenter-5-1-0-1-AlertHistoryStore-changelog
+_confluent-controlcenter-5-1-0-1-Group-ONE_MINUTE-changelog
+_confluent-controlcenter-5-1-0-1-Group-THREE_HOURS-changelog
+_confluent-controlcenter-5-1-0-1-KSTREAM-OUTEROTHER-0000000096-store-changelog
+_confluent-controlcenter-5-1-0-1-KSTREAM-OUTERTHIS-0000000095-store-changelog
+_confluent-controlcenter-5-1-0-1-MetricsAggregateStore-changelog
+_confluent-controlcenter-5-1-0-1-MetricsAggregateStore-repartition
+_confluent-controlcenter-5-1-0-1-MonitoringMessageAggregatorWindows-ONE_MINUTE-changelog
+_confluent-controlcenter-5-1-0-1-MonitoringMessageAggregatorWindows-THREE_HOURS-changelog
+_confluent-controlcenter-5-1-0-1-MonitoringStream-ONE_MINUTE-changelog
+_confluent-controlcenter-5-1-0-1-MonitoringStream-THREE_HOURS-changelog
+_confluent-controlcenter-5-1-0-1-MonitoringTriggerStore-changelog
+_confluent-controlcenter-5-1-0-1-MonitoringVerifierStore-changelog
+_confluent-controlcenter-5-1-0-1-TriggerActionsStore-changelog
+_confluent-controlcenter-5-1-0-1-TriggerEventsStore-changelog
+_confluent-controlcenter-5-1-0-1-actual-group-consumption-rekey
+_confluent-controlcenter-5-1-0-1-aggregate-topic-partition
+_confluent-controlcenter-5-1-0-1-aggregate-topic-partition-changelog
+_confluent-controlcenter-5-1-0-1-aggregatedTopicPartitionTableWindows-ONE_MINUTE-changelog
+_confluent-controlcenter-5-1-0-1-aggregatedTopicPartitionTableWindows-THREE_HOURS-changelog
+_confluent-controlcenter-5-1-0-1-cluster-rekey
+_confluent-controlcenter-5-1-0-1-error-topic
+_confluent-controlcenter-5-1-0-1-expected-group-consumption-rekey
+_confluent-controlcenter-5-1-0-1-group-aggregate-topic-ONE_MINUTE
+_confluent-controlcenter-5-1-0-1-group-aggregate-topic-ONE_MINUTE-changelog
+_confluent-controlcenter-5-1-0-1-group-aggregate-topic-THREE_HOURS
+_confluent-controlcenter-5-1-0-1-group-aggregate-topic-THREE_HOURS-changelog
+_confluent-controlcenter-5-1-0-1-group-stream-extension-rekey
+_confluent-controlcenter-5-1-0-1-metrics-trigger-measurement-rekey
+_confluent-controlcenter-5-1-0-1-monitoring-aggregate-rekey
+_confluent-controlcenter-5-1-0-1-monitoring-aggregate-rekey-changelog
+_confluent-controlcenter-5-1-0-1-monitoring-message-rekey
+_confluent-controlcenter-5-1-0-1-monitoring-trigger-event-rekey
+_confluent-metrics
+_confluent-monitoring
+_schemas
+```
+
+Docker are based on [these dockers from Confluent gitHub](https://github.com/confluentinc/cp-docker-images)
+
+N.B: You can check Kafka cluster health through [this url](http://localhost:9021)
+
+
+## HDFS
+
+HDFS 2.0.0 from Hadoop 3.1.1
+
+To launch hdfs docker :
+Go to folder `docker-hdfs` and run : 
+```
+docker-compose up -d
+```
+
+If everything went well : 
+```
+HW15215:docker-hdfs frisch$ docker ps -a
+CONTAINER ID        IMAGE                                                    COMMAND                  CREATED              STATUS                            PORTS               NAMES
+48107b05305f        bde2020/hadoop-resourcemanager:2.0.0-hadoop3.1.1-java8   "/entrypoint.sh /run…"   59 seconds ago       Up 3 seconds (health: starting)   8088/tcp            docker-hdfs_resourcemanager_1
+a2dbca82d883        bde2020/hadoop-nodemanager:2.0.0-hadoop3.1.1-java8       "/entrypoint.sh /run…"   About a minute ago   Up 59 seconds (healthy)           8042/tcp            docker-hdfs_nodemanager1_1
+c5bce5a10124        bde2020/hadoop-historyserver:2.0.0-hadoop3.1.1-java8     "/entrypoint.sh /run…"   About a minute ago   Up 59 seconds (healthy)           8188/tcp            docker-hdfs_historyserver_1
+9330e4f8ed96        bde2020/hadoop-datanode:2.0.0-hadoop3.1.1-java8          "/entrypoint.sh /run…"   About a minute ago   Up About a minute (healthy)       9864/tcp            docker-hdfs_datanode2_1
+92afaea96a84        bde2020/hadoop-datanode:2.0.0-hadoop3.1.1-java8          "/entrypoint.sh /run…"   About a minute ago   Up About a minute (healthy)       9864/tcp            docker-hdfs_datanode3_1
+ffb106655e4e        bde2020/hadoop-datanode:2.0.0-hadoop3.1.1-java8          "/entrypoint.sh /run…"   About a minute ago   Up About a minute (healthy)       9864/tcp            docker-hdfs_datanode1_1
+b589ee2a33fa        bde2020/hadoop-namenode:2.0.0-hadoop3.1.1-java8          "/entrypoint.sh /run…"   About a minute ago   Up About a minute (healthy)       9870/tcp            docker-hdfs_namenode_1
+```
+
+You can start to use hdfs commands by login into a node : 
+
+```
+HW15215:docker-hdfs frisch$ docker exec -it docker-hdfs_datanode1_1 bash
+root@ffb106655e4e:/# hdfs dfs -ls /
+WARNING: HADOOP_PREFIX has been replaced by HADOOP_HOME. Using value of HADOOP_PREFIX.
+Found 1 items
+drwxr-xr-x   - root supergroup          0 2019-02-07 14:34 /rmstate
+```
+
+Dockers are based on [these dockers from Big Data Europe gitHub](https://github.com/big-data-europe/docker-hadoop)
+
+N.B : It is possible that containers start too fast and resourcemanager is stopped because the namenode is still in safe mode => 
+Just restart the resourcemanager and it will be ok `docker start docker-hdfs_resourcemanager_1` .
