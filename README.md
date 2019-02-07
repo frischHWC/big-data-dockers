@@ -43,7 +43,7 @@ hbase(main):001:0>
 ```
 
 
-Docker are based on [this dockers from gitHub](https://github.com/big-data-europe/docker-hbase)
+Dockers are based on [these dockers from Big Data Europe gitHub](https://github.com/big-data-europe/docker-hbase)
 
 
 ## Spark
@@ -93,7 +93,7 @@ scala>
 
 N.B : You should also see spark master and its worker at this url : [http://localhost:8080](http://localhost:8080)
 
-Dockers are base on [this docker](https://hub.docker.com/r/gettyimages/spark/tags)
+Dockers are based on [these dockers from gettyimages](https://hub.docker.com/r/gettyimages/spark/tags)
 
 ## Hive
 
@@ -130,12 +130,12 @@ Hive-on-MR is deprecated in Hive 2 and may not be available in the future versio
 hive> 
 ```
 
-Docker are based on [this dockers from gitHub](https://github.com/big-data-europe/docker-hive)
+Dockers are based on [these dockers from Big Data Europe gitHub](https://github.com/big-data-europe/docker-hive)
 
 
 ## Kafka
 
-
+Kafka 2.1.0 from Confluent 5.1.0
 
 To launch hive docker :
 Go to folder `docker-kafka` and run : 
@@ -201,5 +201,45 @@ _confluent-monitoring
 _schemas
 ```
 
-Docker are based on [this dockers from Confluent](https://github.com/confluentinc/cp-docker-images)
+Docker are based on [these dockers from Confluent gitHub](https://github.com/confluentinc/cp-docker-images)
 
+N.B: You can check Kafka cluster health through [this url](http://localhost:9021)
+
+
+## HDFS
+
+HDFS 2.0.0 from Hadoop 3.1.1
+
+To launch hdfs docker :
+Go to folder `docker-hdfs` and run : 
+```
+docker-compose up -d
+```
+
+If everything went well : 
+```
+HW15215:docker-hdfs frisch$ docker ps -a
+CONTAINER ID        IMAGE                                                    COMMAND                  CREATED              STATUS                            PORTS               NAMES
+48107b05305f        bde2020/hadoop-resourcemanager:2.0.0-hadoop3.1.1-java8   "/entrypoint.sh /run…"   59 seconds ago       Up 3 seconds (health: starting)   8088/tcp            docker-hdfs_resourcemanager_1
+a2dbca82d883        bde2020/hadoop-nodemanager:2.0.0-hadoop3.1.1-java8       "/entrypoint.sh /run…"   About a minute ago   Up 59 seconds (healthy)           8042/tcp            docker-hdfs_nodemanager1_1
+c5bce5a10124        bde2020/hadoop-historyserver:2.0.0-hadoop3.1.1-java8     "/entrypoint.sh /run…"   About a minute ago   Up 59 seconds (healthy)           8188/tcp            docker-hdfs_historyserver_1
+9330e4f8ed96        bde2020/hadoop-datanode:2.0.0-hadoop3.1.1-java8          "/entrypoint.sh /run…"   About a minute ago   Up About a minute (healthy)       9864/tcp            docker-hdfs_datanode2_1
+92afaea96a84        bde2020/hadoop-datanode:2.0.0-hadoop3.1.1-java8          "/entrypoint.sh /run…"   About a minute ago   Up About a minute (healthy)       9864/tcp            docker-hdfs_datanode3_1
+ffb106655e4e        bde2020/hadoop-datanode:2.0.0-hadoop3.1.1-java8          "/entrypoint.sh /run…"   About a minute ago   Up About a minute (healthy)       9864/tcp            docker-hdfs_datanode1_1
+b589ee2a33fa        bde2020/hadoop-namenode:2.0.0-hadoop3.1.1-java8          "/entrypoint.sh /run…"   About a minute ago   Up About a minute (healthy)       9870/tcp            docker-hdfs_namenode_1
+```
+
+You can start to use hdfs commands by login into a node : 
+
+```
+HW15215:docker-hdfs frisch$ docker exec -it docker-hdfs_datanode1_1 bash
+root@ffb106655e4e:/# hdfs dfs -ls /
+WARNING: HADOOP_PREFIX has been replaced by HADOOP_HOME. Using value of HADOOP_PREFIX.
+Found 1 items
+drwxr-xr-x   - root supergroup          0 2019-02-07 14:34 /rmstate
+```
+
+Dockers are based on [these dockers from Big Data Europe gitHub](https://github.com/big-data-europe/docker-hadoop)
+
+N.B : It is possible that containers start too fast and resourcemanager is stopped because the namenode is still in safe mode => 
+Just restart the resourcemanager and it will be ok `docker start docker-hdfs_resourcemanager_1` .
