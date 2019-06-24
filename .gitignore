@@ -6,3 +6,6 @@
 /docker-spark/conf/
 /docker-spark/data/
 /docker-spark/data/*
+
+# IJ
+.idea

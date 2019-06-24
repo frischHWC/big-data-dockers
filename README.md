@@ -243,3 +243,25 @@ Dockers are based on [these dockers from Big Data Europe gitHub](https://github.
 
 N.B : It is possible that containers start too fast and resourcemanager is stopped because the namenode is still in safe mode => 
 Just restart the resourcemanager and it will be ok `docker start docker-hdfs_resourcemanager_1` .
+
+
+## Nifi
+
+Nifi 1.9.2
+
+To launch nifi docker :
+Go to folder 'docker-nifi' and run : 
+```
+docker-compose up -d`
+```
+
+If everything went well :
+```
+HW15215:docker-nifi frisch$ docker ps -a
+CONTAINER ID        IMAGE                             COMMAND                  CREATED             STATUS              PORTS                                                   NAMES
+a7a4f9f7f631        apache/nifi:1.9.2                 "../scripts/start.sh"    7 minutes ago       Up 7 minutes        8080/tcp, 8443/tcp, 10000/tcp, 0.0.0.0:8081->8081/tcp   nifi2
+a0908ee57c17        apache/nifi:1.9.2                 "../scripts/start.sh"    7 minutes ago       Up 7 minutes        8443/tcp, 0.0.0.0:8080->8080/tcp, 10000/tcp             nifi1
+f884126a97e5        confluentinc/cp-zookeeper:5.2.2   "/etc/confluent/dock…"   7 minutes ago       Up 7 minutes        2888/tcp, 0.0.0.0:2181->2181/tcp, 3888/tcp              zookeeper
+```
+
+Dockers are based on [these dockers from Apache dockers](https://hub.docker.com/r/apache/nifi/)
